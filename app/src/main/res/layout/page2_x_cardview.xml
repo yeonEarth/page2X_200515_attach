@@ -63,7 +63,7 @@
 
 
             //하트
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/cardview_heart"
                 android:layout_width="21dp"
                 android:layout_height="21dp"
@@ -73,7 +73,7 @@
                 android:background="@drawable/ic_icon_addmy" />
 
             //관광지 위치를 지도위에 나타내주는 버튼
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/cardview_pin"
                 android:layout_width="21dp"
                 android:layout_height="21dp"

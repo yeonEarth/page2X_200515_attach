@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="445dp"
         android:fitsSystemWindows="true"
+        android:background="@drawable/ic_bg_photospot"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -97,17 +98,18 @@
                         android:layout_height="277dp">
 
                         //맵뷰 확장 버튼
-                        <Button
+                        <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/expand_btn"
                             android:layout_width="39dp"
                             android:layout_height="39dp"
                             android:layout_alignParentBottom="true"
                             android:layout_alignParentRight="true"
                             android:background="@drawable/ic_icon_mapexpand"
-                            android:layout_margin="8dp"/>
+                            android:layout_marginRight="8dp"
+                            android:layout_marginBottom="25dp"/>
 
                         //맵뷰 리셋 버튼
-                        <Button
+                        <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/reset_btn"
                             android:layout_width="39dp"
                             android:layout_height="39dp"
@@ -115,11 +117,11 @@
                             android:textSize="10dp"
                             android:textColor="#000000"
                             android:gravity="center"
-                            android:layout_alignParentBottom="true"
                             android:layout_alignParentRight="true"
                             android:background="#ffffff"
-                            android:layout_marginBottom="50dp"
-                            android:layout_marginRight="8dp"/>
+                            android:layout_above="@+id/expand_btn"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginBottom="8dp"/>
 
                     </RelativeLayout>
 
@@ -179,7 +181,7 @@
 
 
     //혜택
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/gift"
         android:layout_width="38dp"
         android:layout_height="38dp"
@@ -191,7 +193,7 @@
 
 
     //카테고리 버튼
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/category_btn"
         android:layout_width="120dp"
         android:layout_height="39dp"

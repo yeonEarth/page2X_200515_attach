@@ -38,7 +38,7 @@
         android:gravity="center"/>
 
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/category_done_btn"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"

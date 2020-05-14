@@ -8,7 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    /*바텀시트 모서리를 둥글게 하기위한 스타일*/
     <style name="CustomBottom" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
     </style>
 

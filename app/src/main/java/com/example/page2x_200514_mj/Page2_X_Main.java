@@ -1,15 +1,18 @@
 package com.example.page2x_200514_mj;
 
+import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,7 +92,12 @@ public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface
     MapView mapView;
     MapPOIItem marker;
     ViewGroup mapViewContainer;
+    RelativeLayout map_layout;
     Button reset_btn;
+    Button category_btn;
+    Button mapExpand_btn;
+    Button arrow_btn;
+    boolean isExpand = false;
 
     //리사이클러뷰 관련
     RecyclerView recyclerView;
@@ -105,6 +113,14 @@ public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface
         super.onCreate(savedInstanceState);
         setContentView(R.layout.page2_x_main);
 
+        //기기의 높이를 구한다.
+        Display display = getWindowManager().getDefaultDisplay();  // in Activity
+        Point size = new Point();
+        display.getRealSize(size); // or getSize(size)
+        final float d = Page2_X_Main.this.getResources().getDisplayMetrics().density;
+        final int height = size.y - (int)(100 * d);
+
+
         //데이터베이스 관련
         mDbOpenHelper = new DbOpenHelper(this);
         mDbOpenHelper.open();
@@ -113,7 +129,7 @@ public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface
 
         //맵 관련
         mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
-        RelativeLayout relativeLayout = (RelativeLayout)findViewById(R.id.map);
+        map_layout = (RelativeLayout) findViewById(R.id.map_view);
 
 
         //그 외 객체연결
@@ -121,6 +137,9 @@ public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface
         category_selected_btn= (Button)findViewById(R.id.btn);
         scrollView = (ScrollView)findViewById(R.id.selected_category_btn);
         progressBar = (ProgressBar)findViewById(R.id.progress);
+        category_btn = (Button)findViewById(R.id.category_btn);
+        mapExpand_btn = (Button)findViewById(R.id.expand_btn);
+        arrow_btn = (Button)findViewById(R.id.arrow_btn);
         asyncDialog= new ProgressDialog( this);
         adapter = new Page2_X_Adapter(getApplicationContext(), items, this);
         appBarLayout = (AppBarLayout)findViewById(R.id.app_bar);
@@ -128,24 +147,45 @@ public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
-                    // Collapsed
+
                     //Log.d("접혔어!!!!", "접혔어!!");
-//                    page3_1_x_region.setVisibility(View.VISIBLE);
-//                    benefit.setVisibility(View.VISIBLE);
-//                    benefit_url.setVisibility(View.VISIBLE);
+                    if(isExpand){
+                        changeVisibility(false, height);
+                        isExpand = false;
+
+                        //카테고리랑 혜택을 보이게
+                        category_btn.setVisibility(View.VISIBLE);
+                        gift.setVisibility(View.VISIBLE);
+
+                        //arrow버튼 보이게
+                        arrow_btn.getLayoutParams().height = 0;
+                        arrow_btn.requestLayout();
+                    }
+
                 } else if (verticalOffset == 0) {
-                    // Expanded
+
                     //Log.d("확장됐어!!", "확장쓰!!");
                 } else {
-                    // Somewhere in between
+
                     //Log.d("중간이야!!!", "중간이야!!!!");
-//                    page3_1_x_region.setVisibility(View.INVISIBLE);
-//                    benefit.setVisibility(View.INVISIBLE);
-//                    benefit_url.setVisibility(View.INVISIBLE);
                 }
             }
         });
 
+
+        //세로 드래그 문제를 해결하기 위한 부분
+        //https://do-dam.tistory.com/entry/CoordinatorLayout-App-Bar-%EB%93%9C%EB%9E%98%EA%B7%B8-%EB%B9%84%ED%99%9C%EC%84%B1%ED%99%94-%EC%83%81%EB%8B%A8-%EC%8A%A4%ED%81%AC%EB%A1%A4-%EA%B5%AC%ED%98%84
+        if (appBarLayout.getLayoutParams() != null) {
+            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams)appBarLayout.getLayoutParams();
+            AppBarLayout.Behavior appBarLayoutBehaviour = new AppBarLayout.Behavior();
+            appBarLayoutBehaviour.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
+                @Override
+                public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
+                    return false;
+                }
+            });
+            layoutParams.setBehavior(appBarLayoutBehaviour);
+        }
 
 
         //앞 액티비티에서 값 전달받아서 서치 텍스트에 넣기
@@ -190,22 +230,6 @@ public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface
 
 
 
-        //세로 드래그 문제를 해결하기 위한 부분
-        //https://do-dam.tistory.com/entry/CoordinatorLayout-App-Bar-%EB%93%9C%EB%9E%98%EA%B7%B8-%EB%B9%84%ED%99%9C%EC%84%B1%ED%99%94-%EC%83%81%EB%8B%A8-%EC%8A%A4%ED%81%AC%EB%A1%A4-%EA%B5%AC%ED%98%84
-        AppBarLayout appBar = (AppBarLayout) findViewById(R.id.app_bar);
-        if (appBar.getLayoutParams() != null) {
-            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) appBar.getLayoutParams();
-            AppBarLayout.Behavior appBarLayoutBehaviour = new AppBarLayout.Behavior();
-            appBarLayoutBehaviour.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
-                @Override
-                public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
-                    return false;
-                }
-            });
-            layoutParams.setBehavior(appBarLayoutBehaviour);
-        }
-
-
         //맵뷰
         mapView = new MapView(this);
         mapView.setClickable(false);
@@ -226,7 +250,10 @@ public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface
         mapView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                return true;
+                if(!isExpand)
+                    return true;
+                else
+                    return false;
             }
         });
 
@@ -236,7 +263,7 @@ public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface
         reset_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(37.566297, 126.977946), 8, true);
+                mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(y, x), 8, true);
             }
         });
 
@@ -244,7 +271,6 @@ public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface
 
         //관광 api 연결 부분
         settingAPI_Data();
-
         asyncDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         asyncDialog.setMessage("데이터 로딩중입니다.");
 
@@ -294,16 +320,16 @@ public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface
         });
 
 
+
         //카테고리 버튼 누르면
-        final Button category_btn = (Button)findViewById(R.id.category_btn);
         category_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Page2_X_CategoryBottom category_bottomsheet = new Page2_X_CategoryBottom();
-                category_bottomsheet.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomBottom);
                 category_bottomsheet.show(getSupportFragmentManager(), "category");
             }
         });
+
 
 
         //카테고리에서 선택된 타입을 버튼화
@@ -316,8 +342,89 @@ public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface
         });
 
 
-    }
 
+        //지도 확대 버튼 누르면
+        mapExpand_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+
+                if(!isExpand){
+                    appBarLayout.getLayoutParams().height = height;
+                    appBarLayout.requestLayout();
+                    map_layout.setLayoutParams(params2);
+                    isExpand = true;
+
+                    //카테고리랑 혜택을 안보이게
+                    category_btn.setVisibility(View.INVISIBLE);
+                    gift.setVisibility(View.INVISIBLE);
+
+                    //arrow버튼 보이게
+                    arrow_btn.getLayoutParams().height = (int)(50*d);
+                    arrow_btn.requestLayout();
+                }
+
+                else {
+                    changeVisibility(false, height);
+                    isExpand = false;
+
+                    //카테고리랑 혜택을 보이게
+                    category_btn.setVisibility(View.VISIBLE);
+                    gift.setVisibility(View.VISIBLE);
+
+                    //arrow버튼 보이게
+                    arrow_btn.getLayoutParams().height = 0;
+                    arrow_btn.requestLayout();
+
+                    //맵 중심을 리셋
+                    mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(y, x), 8, true);
+                }
+            }
+        });
+   }
+
+
+
+    //화면을 생성할때 부드럽게 주기위한 애니메이션 함수
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void changeVisibility(final boolean isExpanded, int height) {
+
+        // height 값을 dp로 지정해서 넣고싶으면 아래 소스를 이용
+        float d = Page2_X_Main.this.getResources().getDisplayMetrics().density;
+        final int applayout_height = (int) (445 * d);
+        final int map_height = (int) (277 * d);
+
+        final ValueAnimator va = isExpanded ? ValueAnimator.ofInt(applayout_height, height) : ValueAnimator.ofInt(height, applayout_height);
+        va.setDuration(600);   // Animation이 실행되는 시간, n/1000초
+        va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+
+                int value = (int) animation.getAnimatedValue();                // value는 height 값
+                appBarLayout.getLayoutParams().height = value;
+                appBarLayout.requestLayout();
+
+            }
+        });
+
+        final ValueAnimator va2 = isExpanded ? ValueAnimator.ofInt(applayout_height, height) : ValueAnimator.ofInt(height, map_height);
+        va2.setDuration(600);   // Animation이 실행되는 시간, n/1000초
+        va2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+
+                int value = (int) animation.getAnimatedValue();                // value는 height 값
+                map_layout.getLayoutParams().height = value;
+                map_layout.requestLayout();
+
+            }
+        });
+        va2.start();
+        va.start();
+
+
+    }
 
 
     //api 연결 후 값 정제
@@ -439,6 +546,7 @@ public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface
     }
 
 
+    //카테고리바텀시트에서 선택한 타입 api를 돌림
     @Override
     public void onData(ArrayList<Page2_X_CategoryBottom.Category_item> list) {
 
@@ -733,7 +841,7 @@ public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface
         builder.show();
     }
 
-    
+
     //로딩할 데이터가 더이상 없을 때
     public void noData_Dialog() {
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
@@ -745,7 +853,5 @@ public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface
         });
         builder.show();
     }
-
-
 
 }

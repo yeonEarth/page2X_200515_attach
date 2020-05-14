@@ -6,15 +6,30 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:id="@+id/nestScrollView"
-    android:background="#ffffff"
     tools:showIn="@layout/page2_x_main">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/page2_X_recyclerview"
-        android:paddingTop="10dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            //arrow버튼
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/arrow_btn"
+                android:layout_width="65dp"
+                android:layout_height="0dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/ic_icon_maparrow"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/page2_X_recyclerview"
+                android:layout_below="@+id/arrow_btn"
+                android:paddingTop="10dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffffff"/>
+
+        </RelativeLayout>
 
 </androidx.core.widget.NestedScrollView>
