@@ -38,13 +38,15 @@
         android:gravity="center"/>
 
 
+    //완료 버튼
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/category_done_btn"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#000000"
-        android:background="#ffffff"
+        android:background="#00FFFFFF"
         android:text="완료"/>
 
     //리스트뷰

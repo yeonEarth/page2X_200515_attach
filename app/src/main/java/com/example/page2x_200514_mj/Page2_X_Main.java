@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -17,7 +18,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -28,6 +31,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.DialogFragment;
@@ -55,7 +59,7 @@ import java.util.concurrent.ExecutionException;
 import databases.DbOpenHelper;
 import databases.Heart_page;
 
-public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface{
+public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface, View.OnClickListener{
 
     //역 이름을 받아서 지역코드랑 시군구코드 받기 위한 배열(현재 3개 지역만 넣어놔서 배열크기가 3임)
     int station_code = 6;
@@ -77,15 +81,15 @@ public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface
     String name_2[] = new String[5];
 
     //api 관련
-    int page = 1;                                        //api 페이지 수
+    int page = 1;     //api 페이지 수
+    boolean isLoadData = true;
     String returnResult, url;
     String Url_front = "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory&fname=";
     String contentTypeId = "12", cat1 = "", cat2 = "";
-    boolean isLoadData = true;
-    ProgressBar progressBar;
-    Button category_selected_btn, gift;
-    ScrollView scrollView;
     ProgressDialog asyncDialog;
+    ProgressBar progressBar;
+    Button  gift;
+    HorizontalScrollView scrollView;
 
     //레이아웃 관련
     AppBarLayout appBarLayout;
@@ -97,14 +101,21 @@ public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface
     Button category_btn;
     Button mapExpand_btn;
     Button arrow_btn;
+    LinearLayout category_add;
     boolean isExpand = false;
-
+    int btn_id[] = new int[]{R.id.category_add_btn1, R.id.category_add_btn2, R.id.category_add_btn3 ,
+            R.id.category_add_btn4, R.id.category_add_btn5, R.id.category_add_btn6, R.id.category_add_btn7, R.id.category_add_btn8};
     //리사이클러뷰 관련
     RecyclerView recyclerView;
     Page2_X_Adapter adapter;
     private DbOpenHelper mDbOpenHelper;
     List<Recycler_item> items = new ArrayList<>();
+    private  Button[] btn = new Button[8];
 
+
+    //기기의 높이를 구한다.
+    float d;
+    int height;
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -113,12 +124,13 @@ public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface
         super.onCreate(savedInstanceState);
         setContentView(R.layout.page2_x_main);
 
+
         //기기의 높이를 구한다.
+         d = Page2_X_Main.this.getResources().getDisplayMetrics().density;
         Display display = getWindowManager().getDefaultDisplay();  // in Activity
         Point size = new Point();
-        display.getRealSize(size); // or getSize(size)
-        final float d = Page2_X_Main.this.getResources().getDisplayMetrics().density;
-        final int height = size.y - (int)(100 * d);
+        display.getRealSize(size);
+        height = size.y - (int)(100 * d);
 
 
         //데이터베이스 관련
@@ -134,15 +146,17 @@ public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface
 
         //그 외 객체연결
         gift = (Button) findViewById(R.id.gift);
-        category_selected_btn= (Button)findViewById(R.id.btn);
-        scrollView = (ScrollView)findViewById(R.id.selected_category_btn);
+        scrollView = (HorizontalScrollView)findViewById(R.id.selected_category_btn);
         progressBar = (ProgressBar)findViewById(R.id.progress);
         category_btn = (Button)findViewById(R.id.category_btn);
+        category_add = (LinearLayout)findViewById(R.id.category_add_layout);
         mapExpand_btn = (Button)findViewById(R.id.expand_btn);
         arrow_btn = (Button)findViewById(R.id.arrow_btn);
         asyncDialog= new ProgressDialog( this);
         adapter = new Page2_X_Adapter(getApplicationContext(), items, this);
         appBarLayout = (AppBarLayout)findViewById(R.id.app_bar);
+
+        //위아래로 드래그 했을 때 변화를 감지하는 부분
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
@@ -163,11 +177,9 @@ public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface
                     }
 
                 } else if (verticalOffset == 0) {
-
-                    //Log.d("확장됐어!!", "확장쓰!!");
+                   // Log.d("확장됐어!!", "확장쓰!!");
                 } else {
-
-                    //Log.d("중간이야!!!", "중간이야!!!!");
+                   // Log.d("중간이야!!!", "중간이야!!!!");
                 }
             }
         });
@@ -299,7 +311,7 @@ public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface
                         //isLoadData가 true이면
                         if(isLoadData) {
                             if( (visibleItemCount + pastVisiblesItems) >= totalItemCount ){
-                                //Toast.makeText(getApplicationContext(), "됐다", Toast.LENGTH_SHORT).show();
+
                                 page++;
 
                                 //관광 api 연결 부분
@@ -330,16 +342,6 @@ public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface
             }
         });
 
-
-
-        //카테고리에서 선택된 타입을 버튼화
-        category_selected_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                category_selected_btn.getLayoutParams().height = 0;
-                category_btn.requestLayout();
-            }
-        });
 
 
 
@@ -382,8 +384,85 @@ public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface
                 }
             }
         });
+
+
+
+
    }
 
+
+    //카테고리 바텀시트에서 선택된 것이 버튼화
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.category_add_btn1:
+                category_add.removeView(v);
+                appBarLayout.getLayoutParams().height = (int)(445*d);
+                appBarLayout.requestLayout();
+
+                contentTypeId = "12";
+                cat1 = "";
+                cat2 = "";
+
+                //api 리셋
+                items.clear();
+                settingAPI_Data();
+                adapter.notifyDataSetChanged();
+                break;
+
+
+                //급한불부터 끄기,, 아래는 나중에
+//            case R.id.category_add_btn2:
+//                category_add.removeView(v);
+//                if(category_add.getChildCount() == 0){
+//                    appBarLayout.getLayoutParams().height = (int)(445*d);
+//                    appBarLayout.requestLayout();
+//                }
+//                break;
+//            case R.id.category_add_btn3:
+//                category_add.removeView(v);
+//                if(category_add.getChildCount() == 0){
+//                    appBarLayout.getLayoutParams().height = (int)(445*d);
+//                    appBarLayout.requestLayout();
+//                }
+//                break;
+//            case R.id.category_add_btn4:
+//                category_add.removeView(v);
+//                if(category_add.getChildCount() == 0){
+//                    appBarLayout.getLayoutParams().height = (int)(445*d);
+//                    appBarLayout.requestLayout();
+//                }
+//                break;
+//            case R.id.category_add_btn5:
+//                category_add.removeView(v);
+//                if(category_add.getChildCount() == 0){
+//                    appBarLayout.getLayoutParams().height = (int)(445*d);
+//                    appBarLayout.requestLayout();
+//                }
+//                break;
+//            case R.id.category_add_btn6:
+//                category_add.removeView(v);
+//                if(category_add.getChildCount() == 0){
+//                    appBarLayout.getLayoutParams().height = (int)(445*d);
+//                    appBarLayout.requestLayout();
+//                }
+//                break;
+//            case R.id.category_add_btn7:
+//                category_add.removeView(v);
+//                if(category_add.getChildCount() == 0){
+//                    appBarLayout.getLayoutParams().height = (int)(445*d);
+//                    appBarLayout.requestLayout();
+//                }
+//                break;
+//            case R.id.category_add_btn8:
+//                category_add.removeView(v);
+//                if(category_add.getChildCount() == 0){
+//                    appBarLayout.getLayoutParams().height = (int)(445*d);
+//                    appBarLayout.requestLayout();
+//                }
+//                break;
+        }
+    }
 
 
     //화면을 생성할때 부드럽게 주기위한 애니메이션 함수
@@ -550,10 +629,38 @@ public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface
     @Override
     public void onData(ArrayList<Page2_X_CategoryBottom.Category_item> list) {
 
-        //선택된 타입을 보여준다.
-//        category_selected_btn.getLayoutParams().height = 200;
-//        category_selected_btn.requestLayout();
+        //카테고리 선택되면 기존 것들 싹 삭제해줌
+        category_add.removeAllViews();
+        appBarLayout.getLayoutParams().height = (int)(483*d);
+        appBarLayout.requestLayout();
 
+        //카테고리에서 타입 선택시 생기는 버튼을 동적 생성
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int)(38*d) );
+        params.rightMargin = (int)(12*d);
+
+        String name= "";
+        for(int i =0; i < list.size(); i++){
+           name = name + list.get(i).name + "  ";
+        }
+
+        Button button = new Button(this);
+        button.setText(name);
+        button.setLayoutParams(params);
+        button.setId(R.id.category_add_btn1);
+        button.setOnClickListener(this);
+        button.setBackgroundResource(R.drawable.box_round_category_add);
+        category_add.addView(button);
+
+        //아래는 나중에
+//        for(int i =0; i < list.size(); i++){
+//            btn[i] = new Button(this);
+//            btn[i].setText(list.get(i).name);
+//            btn[i].setLayoutParams(params);
+//            btn[i].setId(btn_id[i]);
+//            btn[i].setBackgroundResource(R.drawable.box_round_category_add);
+//            btn[i].setOnClickListener(this);
+//            category_add.addView(btn[i]);
+//        }
 
         //기존의 api 값을 지운다.
         items.clear();
@@ -564,13 +671,10 @@ public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface
             cat1 = list.get(p).getCat1();
             cat2 = list.get(p).getCat2();
 
-
             //관광 api 연결 부분
-           settingAPI_Data();
+            settingAPI_Data();
         }
         adapter.notifyDataSetChanged();
-
-
     }
 
 

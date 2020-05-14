@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="category_add_btn1" />
+    <item type="id" name="category_add_btn2" />
+    <item type="id" name="category_add_btn3" />
+    <item type="id" name="category_add_btn4" />
+    <item type="id" name="category_add_btn5" />
+    <item type="id" name="category_add_btn6" />
+    <item type="id" name="category_add_btn7" />
+    <item type="id" name="category_add_btn8" />
+</resources>

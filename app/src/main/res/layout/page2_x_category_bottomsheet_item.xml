@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="63dp"
+    android:layout_height="wrap_content"
     android:paddingLeft="12dp"
     android:paddingRight="12dp"
     android:paddingBottom="4dp">
@@ -11,7 +11,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/category_type_text"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="63dp"
         android:focusable="false"
         android:background="@drawable/box_round_category"
         android:paddingLeft="31dp"

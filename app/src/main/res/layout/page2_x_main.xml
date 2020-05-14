@@ -7,20 +7,20 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:background="@drawable/ic_bg_photospot"
-    android:id="@+id/rootview">
+    android:id="@+id/rootview"
+    tools:context=".Page2_X_Main">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="445dp"
         android:fitsSystemWindows="true"
-        android:background="@drawable/ic_bg_photospot"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             android:background="@drawable/ic_bg_photospot"
@@ -61,27 +61,25 @@
                     android:textSize="18sp"/>
 
                 //카테고리 누르면 생기는 버튼
-                <ScrollView
+                <HorizontalScrollView
                     android:id="@+id/selected_category_btn"
                     android:layout_below="@id/search_bar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp">
 
+                    // 버튼 동적 생성
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:id="@+id/category_add_layout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <Button
-                            android:id="@+id/btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:text="역사"
-                            tools:ignore="Suspicious0dp" />
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp">
 
                     </LinearLayout>
 
-                </ScrollView>
+                </HorizontalScrollView>
 
 
                 //맵뷰
@@ -90,7 +88,8 @@
                     android:layout_below="@id/selected_category_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="21dp">
+                    android:elevation="8dp"
+                    android:layout_marginTop="16dp">
 
                     <RelativeLayout
                         android:id="@+id/map_view"
@@ -140,41 +139,11 @@
 
             </RelativeLayout>
 
-<!--            <androidx.appcompat.widget.Toolbar-->
-<!--                android:id="@+id/toolbar"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="?attr/actionBarSize"-->
-<!--                app:titleTextColor="#000000"-->
-<!--                app:popupTheme="@style/AppTheme.PopupOverlay"-->
-<!--                app:layout_collapseMode="pin" >-->
-<!--                <TextView-->
-<!--                    android:id="@+id/page3_1_x_region"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:visibility="invisible"-->
-<!--                    android:textColor="#000000"-->
-<!--                    android:textStyle="bold"-->
-<!--                    android:text="서울"/>-->
-<!--                <TextView-->
-<!--                    android:id="@+id/benefit"-->
-<!--                    android:layout_marginLeft="50dp"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:visibility="invisible"-->
-<!--                    android:textColor="#80000000"-->
-<!--                    android:textStyle="bold"-->
-<!--                    android:textSize="10dp"-->
-<!--                    android:text="사은품 있음 | 숙박할인 있음 | 음식점할인 있음      ( 더보기-> "/>-->
-<!--                <ImageView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:visibility="invisible"-->
-<!--                    android:src="@drawable/benefit_url"-->
-<!--                    android:id="@+id/benefit_url"/>-->
-<!--            </androidx.appcompat.widget.Toolbar>//app:popupTheme="@style/AppTheme.PopupOverlay" 얘는 뭐지-->
-
         </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+
     </com.google.android.material.appbar.AppBarLayout>
+
 
     //관광지 api가 들어갈 리사이클러뷰
     <include layout="@layout/page2_x_content" />
@@ -188,7 +157,7 @@
         android:layout_gravity="bottom|right"
         android:layout_marginBottom="32dp"
         android:layout_marginRight="16dp"
-        android:elevation="4dp"
+        android:elevation="8dp"
         android:background="@drawable/ic_icon_gift"/>
 
 
@@ -199,7 +168,7 @@
         android:layout_height="39dp"
         android:layout_gravity="bottom|center"
         android:layout_marginBottom="32dp"
-        android:elevation="4dp"
+        android:elevation="8dp"
         android:background="@drawable/box_category"
         android:text="CATEGORY"
         android:textColor="#000000"/>
