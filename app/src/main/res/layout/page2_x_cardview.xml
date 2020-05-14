@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview"
+        card_view:cardCornerRadius="10dp"
+        android:layout_width="156dp"
+        android:layout_height="156dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            //이미지
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/no_image"
+                android:id="@+id/image"/>
+
+            //이미지 그림자
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_shadow" />
+
+
+            //관광지 이름
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="11dp"
+                android:layout_marginLeft="16dp"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                android:text="경복궁" />
+
+
+            //관광지 타입
+            <TextView
+                android:id="@+id/cardview_type"
+                android:layout_width="match_parent"
+                android:layout_height="18dp"
+                android:layout_above="@+id/title"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="16dp"
+                android:text="역사/관광명소"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#ffffff"/>
+
+
+            //하트
+            <Button
+                android:id="@+id/cardview_heart"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/ic_icon_addmy" />
+
+            //관광지 위치를 지도위에 나타내주는 버튼
+            <Button
+                android:id="@+id/cardview_pin"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:layout_below="@id/cardview_heart"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="14dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/ic_position" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="63dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:paddingBottom="4dp">
+
+    <Button
+        android:id="@+id/category_type_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="false"
+        android:background="@drawable/box_round_category"
+        android:paddingLeft="31dp"
+        android:text="자연"
+        android:textColor="#000000"
+        android:textAppearance="@style/categoty_1"
+        android:gravity="left|center_vertical"/>
+
+
+</RelativeLayout>

@@ -1,0 +1,3 @@
+서울 1 0 37.566297 126.977946 http://www.rail-ro.com/kor/benefit/menu_01.html?a=1&pmode=view&station01=1&station02=6&page=1
+양평 31 19 37.492808 127.491803 혜택없음
+신탄리 31 21 38.212610 127.138739 혜택없음
