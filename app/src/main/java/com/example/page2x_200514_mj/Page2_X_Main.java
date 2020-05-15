@@ -61,8 +61,8 @@ import databases.Heart_page;
 
 public class Page2_X_Main extends AppCompatActivity implements Page2_X_Interface, View.OnClickListener{
 
-    //역 이름을 받아서 지역코드랑 시군구코드 받기 위한 배열(현재 3개 지역만 넣어놔서 배열크기가 3임)
-    int station_code = 6;
+
+    int station_code = 9999;
     String[] arr_line = null;
     String[] _name = new String[station_code];           //txt에서 받은 역이름
     String[] _areaCode = new String[station_code];       //txt에서 받은 지역코드

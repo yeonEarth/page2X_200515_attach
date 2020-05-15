@@ -1,14 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="@drawable/ic_bg_photospot">
 
     <WebView
-        android:id="@+id/web"
+        android:id="@+id/page2_svg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="118dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </WebView>
+
+    <AutoCompleteTextView
+        android:id="@+id/searchStation_page2"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_centerHorizontal="true"
+        android:clickable="true"
+        android:completionThreshold="1"
+        android:dropDownHeight="140dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/search_stn_page3"
+        android:textColor="#000000"
+        android:drawableLeft="@drawable/baseline_search_24"
+        android:paddingLeft="25dp"
+        android:drawablePadding="17.6dp"
+        android:hint="검색할 도시를 입력해 주세요"
+        android:fontFamily="@font/notosans_semibold"
+        android:textSize="18dp"/>
+
+    <TextView
+        android:id="@+id/page2_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_below="@+id/searchStation_page2"
+        android:layout_marginTop="13dp"
+        android:text="TIP"
+        android:textAppearance="@style/page2_tip">
+    </TextView>
+
+<!--    <HorizontalScrollView-->
+<!--        android:id="@+id/history_scrollView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_toRightOf="@+id/page2_tip"-->
+<!--        android:layout_marginLeft="10dp"-->
+<!--        android:layout_marginTop="13dp"-->
+<!--        android:layout_below="@+id/searchStation_page2">-->
+
+<!--        // 버튼 동적 생성-->
+<!--        <LinearLayout-->
+<!--            android:id="@+id/history_btn"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:layout_marginLeft="16dp"-->
+<!--            android:layout_marginRight="16dp">-->
+
+<!--            <Button-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                -->
+
+<!--        </LinearLayout>-->
+
+<!--    </HorizontalScrollView>-->
+
+    <TextView
+        android:id="@+id/page2_tip_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/searchStation_page2"
+        android:layout_toRightOf="@+id/page2_tip"
+        android:layout_marginTop="13dp"
+        android:text="아래 지도에서 역을 클릭해보세요."
+        android:textAppearance="@style/page2_tip_text">
+    </TextView>
+
+
+
+</RelativeLayout>

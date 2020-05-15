@@ -40,6 +40,18 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="page2_tip">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#275871</item>
+        <item name="android:fontFamily">@font/notosans_semibold</item>
+    </style>
+
+    <style name="page2_tip_text">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#275871</item>
+        <item name="android:fontFamily">@font/notosans_regular</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

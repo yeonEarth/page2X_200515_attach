@@ -8,4 +8,9 @@
     <item type="id" name="category_add_btn6" />
     <item type="id" name="category_add_btn7" />
     <item type="id" name="category_add_btn8" />
+    <item name="history_btn1" type="id" />
+    <item name="history_btn2" type="id" />
+    <item name="history_btn3" type="id" />
+    <item name="history_btn4" type="id" />
+    <item name="history_btn5" type="id" />
 </resources>
